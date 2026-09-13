@@ -1,4 +1,4 @@
-# Dain Dais — digital business card
+# Dais on the Web
 
 A single-page profile (like a dot.cards profile) that runs on GitHub Pages. Plain HTML/CSS/JS, no build step.
 
