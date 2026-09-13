@@ -1,0 +1,733 @@
+/* Undefined Medium by Andi Rueckel — SIL Open Font License (assets/fonts/undefined-medium/OFL.txt).
+   Uses the installed copy when present, otherwise the bundled webfont. */
+@font-face {
+  font-family: "Undefined";
+  src:
+    local("undefined medium"),
+    local("undefined-medium"),
+    url("assets/fonts/undefined-medium/undefined-medium.woff2") format("woff2"),
+    url("assets/fonts/undefined-medium/undefined-medium.woff") format("woff");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Space Grotesk by Florian Karsten — SIL Open Font License (assets/fonts/space-grotesk/OFL.txt).
+   Declared as weight 500 only, so all text renders in Medium (bold requests use Medium too). */
+@font-face {
+  font-family: "Space Grotesk Medium";
+  src:
+    url("assets/fonts/space-grotesk/SpaceGrotesk-wght.woff2") format("woff2-variations"),
+    url("assets/fonts/space-grotesk/SpaceGrotesk-wght.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #030405;
+  --card: #0e1116;
+  --card-hover: #161b22;
+  --glass: rgba(14, 17, 22, 0.55);
+  --glass-hover: rgba(30, 36, 45, 0.65);
+  --glass-blur: blur(10px) saturate(120%);
+  --chip: #1c222b;
+  --chip-text: #cbd5e1;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --line: rgba(148, 163, 184, 0.18);
+  --icon-size: 50px;
+  --radius: 14px;
+  /* Site font (also used on the lanyard badge). To switch fonts, swap which line is commented. */
+  /* --font: "Space Grotesk Medium", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; */
+  --font: "Undefined", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-grotesk: "Space Grotesk Medium", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  font-synthesis: none; /* single-weight fonts: don't fake bold */
+  -webkit-tap-highlight-color: transparent;
+}
+
+[hidden] { display: none !important; }
+
+button { font: inherit; color: inherit; }
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--chip-text);
+  outline-offset: 2px;
+}
+
+/* ---------- Layout ---------- */
+
+/* Animated background (grid-rise.js or faulty-terminal.js). Sized to the tallest the screen
+   gets (--bg-height, set in index.html) so it still reaches the bottom after a phone's address
+   bar slides away, without resizing — and re-rendering — mid-scroll. */
+.site-bg.faulty-terminal-container,
+.site-bg.grid-rise-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+  height: max(100lvh, var(--bg-height, 0px));
+  pointer-events: none;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 472px;
+  margin: 0 auto;
+  padding: max(16px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Translucent "glass" cards: the background shows through, blurred so text stays readable */
+.card {
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* ---------- Lanyard ---------- */
+
+/* When the 3D lanyard is on, it carries the name, photo, school and major, so those
+   are hidden from the profile card (the name stays available to screen readers). */
+.lanyard-stage { display: none; }
+
+/* The stage reserves room for the resting badge; the 3D layer inside it hangs further down,
+   over the cards (above them in z-order), so the badge can be pulled across them.
+   Only the badge itself catches the pointer — see .lanyard-grab. */
+.lanyard-on .lanyard-stage {
+  display: block;
+  position: relative;
+  z-index: 5;
+  height: var(--lanyard-rest, 560px);
+  pointer-events: none;
+}
+
+.lanyard-on .lanyard-stage .lanyard-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--lanyard-canvas, 1180px);
+  overflow: hidden; /* a badge flung sideways mustn't make the page scroll horizontally */
+}
+
+.lanyard-on .profile-identity {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Profile island ---------- */
+
+.profile { overflow: hidden; }
+
+.banner {
+  position: relative;
+  aspect-ratio: 3 / 1;
+  min-height: 132px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(148, 163, 184, 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(35, 42, 52, 0.6) 0%, rgba(21, 26, 33, 0.3) 100%);
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.avatar {
+  position: absolute;
+  left: 16px;
+  bottom: -12px;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  border: 3px solid var(--chip);
+  background: #5bb8e6;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.profile-body { padding: 24px 16px 16px; }
+
+.name {
+  margin: 0 0 10px;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.details {
+  border-left: 2px solid var(--muted);
+  padding-left: 8px;
+  margin-left: 4px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+/* ---------- At a glance ---------- */
+
+.glance { padding: 16px; }
+
+.skills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 10px;
+}
+
+.skills li {
+  background: var(--chip);
+  color: var(--chip-text);
+  border: 1px solid var(--line);
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- Section menu (line-sidebar.js) ---------- */
+
+.sections .line-sidebar__list { flex: 1; min-width: 0; }
+
+/* The row is the clickable header; the item itself holds the panel too. */
+.sections .line-sidebar__item { cursor: auto; }
+.sections .line-sidebar__item::before { content: none; }
+
+.line-sidebar__row {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Widen the pointer target (moved here from the item so it doesn't cover panel links) */
+.line-sidebar__row::before {
+  content: "";
+  position: absolute;
+  inset: -6px -48px;
+}
+
+.line-sidebar__row:focus-visible { outline-offset: 6px; }
+
+/* Keep the menu labels readable over the bright background tiles. */
+.sections .line-sidebar__label { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 0, 0, 0.75); }
+.sections .line-sidebar__marker,
+.sections .line-sidebar__item::after { box-shadow: 0 0 3px rgba(0, 0, 0, 0.9); }
+
+/* Panels span the full column, back under the marker gutter, and slide open. */
+.line-sidebar__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-left: calc(-1 * (var(--marker-length) + var(--marker-gap)));
+  width: calc(100% + var(--marker-length) + var(--marker-gap));
+  opacity: 0;
+  transition: grid-template-rows 0.35s ease, opacity 0.25s ease;
+}
+
+.line-sidebar__item.is-open > .line-sidebar__panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.line-sidebar__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.line-sidebar__item.is-open > .line-sidebar__panel > .line-sidebar__panel-inner { padding-top: 16px; }
+
+/* Once fully open, let hanging icons and hover tilt spill outside the panel. */
+.line-sidebar__panel.is-settled > .line-sidebar__panel-inner { overflow: visible; }
+
+/* ---------- Link rows ---------- */
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: max-content; /* every row matches the widest one */
+  max-width: 100%;
+  align-self: center;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 60px;
+  padding-right: 18px;
+  transition: background 0.15s;
+}
+
+.link:hover,
+.doc:hover { background: var(--glass-hover); }
+
+.link-icon {
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  margin-left: calc(var(--icon-size) / -3 - 1px); /* hang a third off the card's edge (past its 1px border) */
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.link-icon svg { display: block; width: 100%; height: 100%; }
+
+.link-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.link-title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.link-sub {
+  color: var(--muted);
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.15s;
+}
+
+.link .link-sub,
+.doc .link-sub { font-family: var(--font-grotesk); }
+
+.link .arrow { margin-left: 16px; }
+
+.link:hover .arrow,
+.doc:hover .arrow { transform: translateX(3px); }
+
+/* ---------- Documents ---------- */
+
+.docs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.doc {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  padding: 14px 18px 12px 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.doc-thumb {
+  position: relative;
+  align-self: center;
+  width: 26%;
+  min-width: 96px;
+  max-width: 130px;
+  aspect-ratio: 8.5 / 11;
+  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s;
+}
+
+.doc:hover .doc-thumb { transform: translateY(-2px) scale(1.03); }
+
+.doc-thumb::before {
+  /* loading shimmer, hidden once the page renders */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, #eceff2 30%, #f8f9fa 50%, #eceff2 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+.doc-thumb.is-ready::before { display: none; }
+
+.doc-thumb.is-error::after {
+  /* shown when the PDF preview can't be rendered */
+  content: "PDF";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #e9edf1;
+  color: #8a95a1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.doc-thumb canvas {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+.doc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doc-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--card);
+}
+
+.doc-icon svg { width: 24px; height: 24px; }
+
+.footer {
+  margin-top: 10px;
+  align-self: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* ---------- Viewer ---------- */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+}
+
+.viewer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fade 0.18s ease-out;
+}
+
+.viewer-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(980px, calc(100vw - 48px));
+  height: calc(100vh - 48px);
+  height: calc(100dvh - 48px);
+  background: #07090c;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  animation: pop 0.2s ease-out;
+}
+
+.viewer-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 18px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+
+.viewer-heading {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer-file {
+  color: var(--muted);
+  font-size: 0.78rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tool {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tool:hover { background: rgba(148, 163, 184, 0.14); }
+
+.tool svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tool-zoom {
+  min-width: 58px;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.viewer-viewport {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.08) 1px, transparent 0) 0 0 / 22px 22px,
+    #050608;
+}
+
+.viewer-viewport.is-dragging { cursor: grabbing; }
+
+.viewer-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.viewer-stage.is-animating { transition: transform 0.24s ease; }
+
+.viewer-stage canvas {
+  display: block;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.viewer-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.viewer-status a {
+  color: var(--chip-text);
+  text-decoration: underline;
+  pointer-events: auto;
+}
+
+.viewer-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(14, 17, 22, 0.92);
+  border: 1px solid var(--line);
+  color: var(--chip-text);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.viewer-hint.is-hidden { opacity: 0; }
+
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.97) translateY(8px); } }
+
+/* Full screen viewer on phones */
+@media (max-width: 640px) {
+  .viewer-window {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .viewer-bar {
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-left: 14px;
+  }
+
+  .viewer-hint { bottom: max(16px, env(safe-area-inset-bottom)); }
+
+  .tool { min-width: 38px; }
+}
+
+/* ---------- Startup hints (hints.js) ---------- */
+
+.hint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  width: max-content;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(14, 17, 22, 0.82);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hint.is-visible { opacity: 1; }
+
+/* A gentle nudge toward whatever the hint points at. */
+.hint--badge.is-visible { animation: hint-nudge-right 1.4s ease-in-out infinite; }
+.hint--menu.is-visible { animation: hint-nudge-down 1.4s ease-in-out infinite; }
+
+@keyframes hint-nudge-right { 50% { translate: 5px 0; } }
+@keyframes hint-nudge-down { 50% { translate: 0 4px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hint.is-visible { animation: none; }
+}
+
+/* ---------- Tilt (tilted-card.js) ---------- */
+
+.is-tilting {
+  position: relative;
+  z-index: 3;
+  will-change: transform;
+}
+
+.tilted-card-caption {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 150;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--text);
+  color: #0e1116;
+  font-size: 10px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .tilted-card-caption { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

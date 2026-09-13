@@ -1,0 +1,23 @@
+{
+  "name": "lanyard-bundle",
+  "private": true,
+  "type": "module",
+  "description": "Builds assets/lanyard/ (React Bits Lanyard) for the static site. card.glb lives in ../assets/lanyard.",
+  "scripts": {
+    "prebuild": "cp ../assets/lanyard/card-*.glb ./card.glb",
+    "build": "esbuild entry.jsx --bundle --format=esm --minify --jsx=automatic --target=es2020 --loader:.glb=file --loader:.png=file '--asset-names=[name]-[hash]' --public-path=assets/lanyard --entry-names=lanyard --outdir=../assets/lanyard '--define:process.env.NODE_ENV=\"production\"' --legal-comments=linked",
+    "postbuild": "rm card.glb"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.8",
+    "@react-three/fiber": "9.7.0",
+    "@react-three/rapier": "2.2.0",
+    "meshline": "3.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.186.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

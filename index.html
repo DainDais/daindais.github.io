@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dain Dais</title>
+  <meta name="description" content="Dain Dais — Information Technology student at North Carolina A&amp;T. Cybersecurity, game design, IT help desk, and device repair." />
+  <meta name="theme-color" content="#030405" />
+
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="Dain Dais" />
+  <meta property="og:description" content="B.S. Information Technology @ North Carolina A&amp;T · Greensboro, NC" />
+  <meta property="og:image" content="assets/img/headshot.jpg" />
+
+  <link rel="icon" href="assets/img/headshot.jpg" />
+  <link rel="apple-touch-icon" href="assets/img/headshot.jpg" />
+
+  <link rel="preload" href="assets/fonts/undefined-medium/undefined-medium.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="faulty-terminal.css" />
+  <link rel="stylesheet" href="assets/lanyard/lanyard.css" />
+  <link rel="stylesheet" href="line-sidebar.css" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- 3D lanyard: hide the in-card name/photo/school up front when WebGL exists (no flash);
+       lanyard setup below removes this class again if the lanyard can't load. -->
+  <script>
+    if (window.WebGLRenderingContext) document.documentElement.classList.add("lanyard-on");
+  </script>
+</head>
+<body>
+  <!-- ============ LANYARD (name, photo, school, major) ============ -->
+  <div class="lanyard-stage" id="lanyard" role="img"
+       aria-label="ID badge on a lanyard: Dain Dais, North Carolina Agricultural and Technical State University, B.S. Information Technology"></div>
+
+  <main class="page">
+
+    <!-- ============ PROFILE HEADER ============
+         Name, photo, school and major. Shown only when the 3D lanyard can't load;
+         otherwise the lanyard badge shows them and this stays for screen readers. -->
+    <section class="card profile profile-identity" aria-labelledby="profile-name">
+      <!-- To use a banner image, add: style="background-image: url('assets/img/banner.jpg')" -->
+      <div class="banner">
+        <img class="avatar" src="assets/img/headshot.jpg" alt="Headshot of Dain Dais" width="600" height="589" />
+      </div>
+
+      <div class="profile-body">
+        <h1 id="profile-name" class="name">Dain Dais</h1>
+
+        <div class="details">
+          <p>North Carolina Agricultural &amp; Technical State University | B.S. Information Technology</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTIONS (expandable menu — React Bits LineSidebar, see line-sidebar.js) ============ -->
+    <div class="sections" id="sections">
+      <ul class="line-sidebar__list">
+        <li class="line-sidebar__item">
+          <button class="line-sidebar__row" type="button" id="section-contact" aria-expanded="false" aria-controls="panel-contact">
+            <span class="line-sidebar__marker" aria-hidden="true"></span>
+            <span class="line-sidebar__label">
+              <span class="line-sidebar__index">01</span>
+              <span class="line-sidebar__text">Contact &amp; Sites</span>
+            </span>
+          </button>
+          <div class="line-sidebar__panel" id="panel-contact" role="region" aria-labelledby="section-contact">
+            <div class="line-sidebar__panel-inner">
+              <nav class="links" aria-label="Contact">
+                <a class="card link" href="https://www.linkedin.com/in/daindais/" target="_blank" rel="noopener" data-tilt data-tilt-caption="Open LinkedIn">
+                  <span class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#0a66c2"/><path fill="#fff" d="M17.3 24.6h5.6V43h-5.6zM20.1 15.5a3.3 3.3 0 1 1 0 6.6 3.3 3.3 0 0 1 0-6.6M26.4 24.6h5.4v2.5h.1c.8-1.4 2.6-3 5.3-3 5.7 0 6.8 3.8 6.8 8.7V43h-5.6v-9c0-2.1 0-4.9-3-4.9s-3.4 2.3-3.4 4.7V43h-5.6z"/></svg>
+                  </span>
+                  <span class="link-text">
+                    <span class="link-title">LinkedIn</span>
+                    <span class="link-sub">linkedin.com/in/daindais/</span>
+                  </span>
+                  <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+
+                <a class="card link" href="https://github.com/daindais" target="_blank" rel="noopener" data-tilt data-tilt-caption="Open GitHub">
+                  <span class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#f0f6fc"/><path fill="#0d1117" transform="translate(14 14) scale(1.333)" d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.6.3 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+                  </span>
+                  <span class="link-text">
+                    <span class="link-title">GitHub</span>
+                    <span class="link-sub">github.com/daindais</span>
+                  </span>
+                  <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+
+                <a class="card link" href="mailto:daindais07@gmail.com" data-tilt data-tilt-caption="Send an email">
+                  <span class="link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 60 60"><defs><linearGradient id="g-mail" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1e51ee"/><stop offset="1" stop-color="#1ad0ff"/></linearGradient></defs><circle cx="30" cy="30" r="30" fill="url(#g-mail)"/><rect x="14" y="19" width="32" height="22" rx="2.5" fill="none" stroke="#fff" stroke-width="2.6"/><path d="m15 20.5 15 12 15-12M15 39.5l11-9.5M45 39.5l-11-9.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg>
+                  </span>
+                  <span class="link-text">
+                    <span class="link-title">Email</span>
+                    <span class="link-sub">daindais07@gmail.com</span>
+                  </span>
+                  <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+
+                <a class="card link" href="tel:+14704528642" data-tilt data-tilt-caption="Call or text">
+                  <span class="link-icon icon-messages" aria-hidden="true">
+                    <svg viewBox="0 0 60 60"><defs><linearGradient id="g-msg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6af77f"/><stop offset="1" stop-color="#0bbd28"/></linearGradient></defs><circle cx="30" cy="30" r="30" fill="url(#g-msg)"/><path fill="#fff" d="M30 14c-10.5 0-19 6.9-19 15.4 0 5 2.9 9.4 7.4 12.2-.4 2.3-1.6 4.5-3.6 6.2 3.6.2 7-.9 9.6-2.9 1.8.5 3.7.8 5.6.8 10.5 0 19-6.9 19-15.4S40.5 14 30 14Z"/></svg>
+                  </span>
+                  <span class="link-text">
+                    <span class="link-title">Cell Phone</span>
+                    <span class="link-sub">+1 (470) 452-8642</span>
+                  </span>
+                  <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </nav>
+            </div>
+          </div>
+        </li>
+
+        <li class="line-sidebar__item">
+          <button class="line-sidebar__row" type="button" id="section-glance" aria-expanded="false" aria-controls="panel-glance">
+            <span class="line-sidebar__marker" aria-hidden="true"></span>
+            <span class="line-sidebar__label">
+              <span class="line-sidebar__index">02</span>
+              <span class="line-sidebar__text">Dain at a Glance</span>
+            </span>
+          </button>
+          <div class="line-sidebar__panel" id="panel-glance" role="region" aria-labelledby="section-glance">
+            <div class="line-sidebar__panel-inner">
+              <section class="card glance" aria-labelledby="section-glance" data-tilt data-tilt-scale="1.03">
+                <ul class="skills" aria-label="Skills">
+                  <li>Cybersecurity</li>
+                  <li>Game Design</li>
+                  <li>IT Help Desk</li>
+                  <li>Device Repair</li>
+                  <li>MacOS</li>
+                  <li>Windows</li>
+                  <li>Linux</li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </li>
+
+        <li class="line-sidebar__item">
+          <button class="line-sidebar__row" type="button" id="section-documents" aria-expanded="false" aria-controls="panel-documents">
+            <span class="line-sidebar__marker" aria-hidden="true"></span>
+            <span class="line-sidebar__label">
+              <span class="line-sidebar__index">03</span>
+              <span class="line-sidebar__text">Documents</span>
+            </span>
+          </button>
+          <div class="line-sidebar__panel" id="panel-documents" role="region" aria-labelledby="section-documents">
+            <div class="line-sidebar__panel-inner">
+              <section class="docs" aria-label="Documents">
+                <button class="card doc" type="button" data-pdf="assets/docs/DainDais_RESUME.pdf" data-title="Resume" data-tilt data-tilt-scale="1.03" data-tilt-caption="View resume">
+                  <span class="doc-thumb" aria-hidden="true"><canvas></canvas></span>
+                  <span class="doc-row">
+                    <span class="doc-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6M9 9h2"/></svg>
+                    </span>
+                    <span class="link-text">
+                      <span class="link-title">Resume</span>
+                      <span class="link-sub">DainDais_RESUME.pdf</span>
+                    </span>
+                    <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </span>
+                </button>
+
+                <button class="card doc" type="button" data-pdf="assets/docs/Dain_Dais_CV.pdf" data-title="Curriculum Vitae (CV)" data-tilt data-tilt-scale="1.03" data-tilt-caption="View CV">
+                  <span class="doc-thumb" aria-hidden="true"><canvas></canvas></span>
+                  <span class="doc-row">
+                    <span class="doc-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6M9 9h2"/></svg>
+                    </span>
+                    <span class="link-text">
+                      <span class="link-title">Curriculum Vitae (CV)</span>
+                      <span class="link-sub">Dain_Dais_CV.pdf</span>
+                    </span>
+                    <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </span>
+                </button>
+              </section>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <footer class="footer">© <span id="year">2026</span> Dain Dais</footer>
+  </main>
+
+  <!-- ============ DOCUMENT VIEWER ============ -->
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+    <div class="viewer-backdrop" data-close></div>
+    <div class="viewer-window">
+      <header class="viewer-bar">
+        <div class="viewer-heading">
+          <h2 id="viewer-title" class="viewer-title">Document</h2>
+          <span id="viewer-file" class="viewer-file"></span>
+        </div>
+        <div class="viewer-tools">
+          <button class="tool" type="button" data-action="zoom-out" aria-label="Zoom out">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+          </button>
+          <button class="tool tool-zoom" type="button" data-action="fit" aria-label="Fit to width" title="Fit to width">
+            <span id="viewer-zoom">100%</span>
+          </button>
+          <button class="tool" type="button" data-action="zoom-in" aria-label="Zoom in">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <a class="tool" id="viewer-open" href="#" target="_blank" rel="noopener" aria-label="Open PDF in new tab" title="Open in new tab">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+          </a>
+          <button class="tool" type="button" data-close aria-label="Close viewer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="viewer-viewport" id="viewer-viewport">
+        <div class="viewer-stage" id="viewer-stage"></div>
+        <div class="viewer-status" id="viewer-status" role="status">Loading…</div>
+        <div class="viewer-hint" id="viewer-hint"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+          integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e"
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="app.js"></script>
+
+  <!-- Expandable section menu (React Bits LineSidebar, see line-sidebar.js) -->
+  <script type="module">
+    import { initLineSidebar } from "./line-sidebar.js";
+    initLineSidebar(document.getElementById("sections"), {
+      accentColor: "#ffffff",
+      textColor: "#c4ccd8",
+      markerColor: "#9aa1ac",
+      showIndex: true,
+      showMarker: true,
+      proximityRadius: 100,
+      maxShift: 30,
+      falloff: "smooth",
+      markerLength: 60,
+      markerGap: 0,
+      tickScale: 0.5,
+      scaleTick: true,
+      itemGap: 20,
+      fontSize: 1.1,
+      smoothing: 100,
+      defaultActive: null, // all sections start collapsed
+      revealOnOpen: true,  // scroll to show the bottom of a section when it opens (only if it's cut off)
+    });
+  </script>
+
+  <!-- Startup hints: "Grab me" beside the badge, "Click to expand" above the menu (see hints.js) -->
+  <script type="module">
+    import { showStartupHints } from "./hints.js";
+    showStartupHints({ badgeText: "Grab me 👉", menuText: "👇 Click to expand", duration: 10000 });
+  </script>
+
+  <!-- Hover tilt on the page's cards and buttons (React Bits TiltedCard, see tilted-card.js) -->
+  <script type="module">
+    import { initTiltedCards } from "./tilted-card.js";
+    initTiltedCards({ rotateAmplitude: 6, scaleOnHover: 1.05, showTooltip: true });
+  </script>
+
+  <!-- Animated site background (React Bits FaultyTerminal, ported to vanilla JS)
+       DISABLED — to bring the glyphs back, change type="text/plain" below to type="module". -->
+  <script type="text/plain" data-background="faulty-terminal">
+    import { mountFaultyTerminal } from "./faulty-terminal.js";
+
+    const background = mountFaultyTerminal(document.body, {
+      className: "site-bg",
+      scale: 2.5,
+      gridMul: [2, 1],
+      digitSize: 1.2,
+      timeScale: 1,
+      pause: false,
+      scanlineIntensity: 1,
+      glitchAmount: 1,
+      flickerAmount: 1,
+      noiseAmp: 1,
+      chromaticAberration: 0,
+      dither: 0,
+      curvature: 0,
+      tint: "#94a3b8",
+      mouseReact: true,
+      mouseStrength: 0.1,
+      pageLoadAnimation: false,
+      brightness: 1,
+    });
+
+    // Freeze the background while the document viewer covers it.
+    const viewer = document.getElementById("viewer");
+    new MutationObserver(() => background.update({ pause: !viewer.hidden }))
+      .observe(viewer, { attributes: true, attributeFilter: ["hidden"] });
+  </script>
+
+  <!-- Animated site background (Grid Rise-style, see grid-rise.js) -->
+  <script type="module">
+    import { mountGridRise } from "./grid-rise.js";
+
+    const background = mountGridRise(document.body, {
+      className: "site-bg",
+      color: "#000000",
+      accent: "#94a3b8",
+      accentStrength: 1,
+      cellSize: 0.05,
+      rounding: 0.15,
+      amplitude: 0.03,
+      liftRadius: 0.7,
+      speed: 0.6,
+      orbit: 55,
+      distance: 0.8,
+      altitude: 0.66,
+      samples: 3,
+      drift: 0,
+      ease: 0.09,
+      interactive: false,
+      offsetY: 0.6,         // sit lower on the screen
+      scrollParallax: 0.15, // drift up slightly as the page scrolls
+    });
+
+    // Keep the background as tall as the screen has ever been (phones grow taller when the
+    // address bar hides). Only grows, so it never resizes mid-scroll; resets on rotation.
+    let tallest = 0;
+    let sizedForWidth = window.innerWidth;
+    const sizeBackground = () => {
+      if (window.innerWidth !== sizedForWidth) {
+        sizedForWidth = window.innerWidth;
+        tallest = 0;
+      }
+      const h = Math.ceil(Math.max(window.innerHeight, window.visualViewport?.height ?? 0));
+      if (h <= tallest) return;
+      tallest = h;
+      document.documentElement.style.setProperty("--bg-height", `${h}px`);
+    };
+    sizeBackground();
+    window.addEventListener("resize", sizeBackground);
+    window.visualViewport?.addEventListener("resize", sizeBackground);
+
+    // Freeze the background while the document viewer covers it.
+    const viewer = document.getElementById("viewer");
+    new MutationObserver(() => background.update({ paused: !viewer.hidden }))
+      .observe(viewer, { attributes: true, attributeFilter: ["hidden"] });
+  </script>
+
+  <!-- 3D lanyard (React Bits Lanyard, bundled from lanyard-src/) -->
+  <script type="module">
+    import { makeBadgeImages } from "./lanyard-card.js";
+
+    const root = document.documentElement;
+    const stage = document.getElementById("lanyard");
+    const showFallback = (err) => {
+      if (err) console.warn("Lanyard unavailable, showing the regular profile header.", err);
+      root.classList.remove("lanyard-on");
+    };
+
+    // Layout, in CSS px. The badge rests above the profile card; the 3D layer extends
+    // PULL_ROOM px further down so the badge can be dragged over the cards.
+    const TOP_MARGIN = 70;   // strap visible above the clip
+    const GAP = 16;          // space between the resting badge and the profile card
+    const PULL_ROOM = 620;
+    const CARD_TOP = 0.92;   // resting badge extent in world units (clip top / card bottom)
+    const CARD_BOTTOM = -1.82;
+
+    const layout = () => {
+      const pixelsPerUnit = Math.min(180, window.innerWidth / 2.2); // badge size
+      const originY = TOP_MARGIN + CARD_TOP * pixelsPerUnit;
+      const rest = Math.round(originY - CARD_BOTTOM * pixelsPerUnit + GAP);
+      stage.style.setProperty("--lanyard-rest", `${rest}px`);
+      stage.style.setProperty("--lanyard-canvas", `${rest + PULL_ROOM}px`);
+      return { pixelsPerUnit, originY };
+    };
+
+    if (root.classList.contains("lanyard-on")) {
+      try {
+        const [{ mountLanyard }, images] = await Promise.all([
+          import("./assets/lanyard/lanyard.js"),
+          makeBadgeImages(),
+        ]);
+        const lanyard = mountLanyard(stage, {
+          ...layout(),
+          eventSource: document.body,
+          gravity: [0, -40, 0],
+          frontImage: images.front,
+          backImage: images.back,
+          imageFit: "cover",
+          lanyardImage: images.strap,
+          lanyardWidth: 1,
+          onError: showFallback,
+        });
+        let lastWidth = window.innerWidth;
+        window.addEventListener("resize", () => {
+          if (window.innerWidth === lastWidth) return; // ignore mobile address-bar height changes
+          lastWidth = window.innerWidth;
+          lanyard.update(layout());
+        });
+      } catch (err) {
+        showFallback(err);
+      }
+    }
+  </script>
+</body>
+</html>
