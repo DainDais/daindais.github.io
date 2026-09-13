@@ -300,8 +300,14 @@
   <script type="module">
     import { mountGridRise } from "./grid-rise.js";
 
+    // Extend the background this far past the top and bottom of the screen, under the
+    // browser's bars; the grid stays framed to the visible screen.
+    const BG_BLEED = 120;
+    document.documentElement.style.setProperty("--bg-bleed", `${BG_BLEED}px`);
+
     const background = mountGridRise(document.body, {
       className: "site-bg",
+      bleed: BG_BLEED,
       color: "#000000",
       accent: "#94a3b8",
       accentStrength: 1,
@@ -358,7 +364,7 @@
 
     // Layout, in CSS px. The badge rests above the profile card; the 3D layer extends
     // PULL_ROOM px further down so the badge can be dragged over the cards.
-    const TOP_MARGIN = 70;   // strap visible above the clip
+    const TOP_MARGIN = 50;   // strap visible above the clip
     const GAP = 16;          // space between the resting badge and the profile card
     const PULL_ROOM = 620;
     const CARD_TOP = 0.92;   // resting badge extent in world units (clip top / card bottom)

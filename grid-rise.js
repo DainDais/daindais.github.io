@@ -37,6 +37,7 @@ const DEFAULTS = {
   // Additions for this site (not GridRise props):
   offsetY: 0, // shifts the grid down the screen; 1 = half the screen height
   scrollParallax: 0, // how far the grid slides up per screen scrolled; 1 = half the screen height
+  bleed: 0, // extra CSS px the canvas extends above and below the framed area (framing is unchanged)
   className: "",
 };
 
@@ -73,6 +74,7 @@ uniform vec3  uRight;
 uniform vec3  uUp;
 uniform vec2  uFocus;
 uniform float uShift;
+uniform float uBleed;
 
 out vec4 fragColor;
 
@@ -187,7 +189,7 @@ void main() {
     if (sy >= S) break;
     for (int sx = 0; sx < 3; sx++) {
       if (sx >= S) break;
-      vec2 frag = gl_FragCoord.xy + (vec2(float(sx), float(sy)) + 0.5) / float(S) - 0.5;
+      vec2 frag = gl_FragCoord.xy - vec2(0.0, uBleed) + (vec2(float(sx), float(sy)) + 0.5) / float(S) - 0.5;
       vec2 uv = (2.0 * frag - uRes) / uRes.y;
       uv.y += uShift;
       vec3 rd = normalize(uFwd * uZoom + uv.x * uRight + uv.y * uUp);
@@ -258,6 +260,7 @@ export function mountGridRise(parent, initialProps = {}) {
       uUp: { value: new Float32Array(3) },
       uFocus: { value: new Float32Array(2) },
       uShift: { value: 0 },
+      uBleed: { value: 0 },
     },
   });
   const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -296,9 +299,13 @@ export function mountGridRise(parent, initialProps = {}) {
   };
   applyProps();
 
+  // uRes is the framed area (canvas minus the bleed above and below), in device pixels.
   const resize = () => {
     renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
-    u.uRes.value.set([gl.drawingBufferWidth, gl.drawingBufferHeight]);
+    const scale = gl.drawingBufferHeight / Math.max(ctn.offsetHeight, 1);
+    const bleed = Math.min(Math.max(props.bleed, 0), ctn.offsetHeight / 4) * scale;
+    u.uBleed.value = bleed;
+    u.uRes.value.set([gl.drawingBufferWidth, Math.max(1, gl.drawingBufferHeight - 2 * bleed)]);
     if (raf === 0) renderer.render({ scene: mesh });
   };
 
@@ -320,8 +327,11 @@ export function mountGridRise(parent, initialProps = {}) {
   const onPointerMove = (e) => {
     if (!props.interactive) return;
     const rect = ctn.getBoundingClientRect();
-    const x = (2 * (e.clientX - rect.left) - rect.width) / rect.height;
-    const y = -(2 * (e.clientY - rect.top) - rect.height) / rect.height + shift;
+    const bleed = Math.min(Math.max(props.bleed, 0), rect.height / 4);
+    const frameTop = rect.top + bleed;
+    const frameHeight = rect.height - 2 * bleed;
+    const x = (2 * (e.clientX - rect.left) - rect.width) / frameHeight;
+    const y = -(2 * (e.clientY - frameTop) - frameHeight) / frameHeight + shift;
     const { ro, fwd, right, up } = camera;
     const z = Math.max(props.zoom, 0.1);
     const rd = normalize([0, 1, 2].map((i) => fwd[i] * z + x * right[i] + y * up[i]));
