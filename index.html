@@ -29,6 +29,12 @@
   </script>
 </head>
 <body>
+  <!-- Animated background lives here (see the Grid Rise script and .bg-track in styles.css) -->
+  <div class="bg-track" id="bg-track" aria-hidden="true"></div>
+
+  <!-- Page content. Clipped at its own bottom so the lanyard's drag area (which hangs down over
+       the cards) can't make the page scroll into empty space. -->
+  <div class="site">
   <!-- ============ LANYARD (name, photo, school, major) ============ -->
   <div class="lanyard-stage" id="lanyard" role="img"
        aria-label="ID badge on a lanyard: Dain Dais, North Carolina Agricultural and Technical State University, B.S. Information Technology"></div>
@@ -192,6 +198,7 @@
 
     <footer class="footer">© <span id="year">2026</span> Dain Dais</footer>
   </main>
+  </div>
 
   <!-- ============ DOCUMENT VIEWER ============ -->
   <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
@@ -305,14 +312,35 @@
   <script type="module">
     import { mountGridRise } from "./grid-rise.js";
 
-    // Extend the background this far past the top and bottom of the screen, under the
-    // browser's bars; the grid stays framed to the visible screen.
+    // The background scrolls with the page but sticks in place (so iOS Safari draws it under its
+    // toolbars like the rest of the page), and reaches BG_BLEED px past the top and bottom of the
+    // screen. Its height is fixed to the tallest the screen can get, so it never resizes mid-scroll.
     const BG_BLEED = 120;
-    document.documentElement.style.setProperty("--bg-bleed", `${BG_BLEED}px`);
+    const root = document.documentElement;
+    const touch = window.matchMedia("(pointer: coarse)").matches;
 
-    const background = mountGridRise(document.body, {
+    const largeViewportHeight = () => {
+      const probe = document.createElement("div");
+      probe.style.cssText = "position:absolute;top:0;width:0;height:100lvh;visibility:hidden";
+      document.body.append(probe);
+      const h = probe.getBoundingClientRect().height;
+      probe.remove();
+      return h;
+    };
+
+    const layoutBackground = () => {
+      // Frame the grid to the screen with the toolbars hidden (a height that doesn't change on scroll).
+      const frameHeight = Math.round(Math.max(largeViewportHeight(), window.innerHeight));
+      // On phones, make the canvas as tall as the whole screen so it covers every toolbar state.
+      const tallest = touch ? Math.max(frameHeight, window.screen?.height ?? 0) : frameHeight;
+      root.style.setProperty("--bg-bleed", `${BG_BLEED}px`);
+      root.style.setProperty("--bg-canvas", `${tallest + 2 * BG_BLEED}px`);
+      return { frameTop: BG_BLEED, frameHeight };
+    };
+
+    const background = mountGridRise(document.getElementById("bg-track"), {
       className: "site-bg",
-      bleed: BG_BLEED,
+      ...layoutBackground(),
       color: "#000000",
       accent: "#94a3b8",
       accentStrength: 1,
@@ -332,23 +360,16 @@
       scrollParallax: 0.15, // drift up slightly as the page scrolls
     });
 
-    // Keep the background as tall as the screen has ever been (phones grow taller when the
-    // address bar hides). Only grows, so it never resizes mid-scroll; resets on rotation.
-    let tallest = 0;
-    let sizedForWidth = window.innerWidth;
-    const sizeBackground = () => {
-      if (window.innerWidth !== sizedForWidth) {
-        sizedForWidth = window.innerWidth;
-        tallest = 0;
-      }
-      const h = Math.ceil(Math.max(window.innerHeight, window.visualViewport?.height ?? 0));
-      if (h <= tallest) return;
-      tallest = h;
-      document.documentElement.style.setProperty("--bg-height", `${h}px`);
-    };
-    sizeBackground();
-    window.addEventListener("resize", sizeBackground);
-    window.visualViewport?.addEventListener("resize", sizeBackground);
+    // Re-layout on rotation (width change), or on desktop when the window is resized. Phones
+    // change height while scrolling as toolbars hide — ignore that.
+    let laidOut = { w: window.innerWidth, h: window.innerHeight };
+    window.addEventListener("resize", () => {
+      const widthChanged = window.innerWidth !== laidOut.w;
+      const heightChanged = window.innerHeight !== laidOut.h;
+      if (!widthChanged && (touch || !heightChanged)) return;
+      laidOut = { w: window.innerWidth, h: window.innerHeight };
+      background.update(layoutBackground());
+    });
 
     // Freeze the background while the document viewer covers it.
     const viewer = document.getElementById("viewer");

@@ -37,7 +37,10 @@ const DEFAULTS = {
   // Additions for this site (not GridRise props):
   offsetY: 0, // shifts the grid down the screen; 1 = half the screen height
   scrollParallax: 0, // how far the grid slides up per screen scrolled; 1 = half the screen height
-  bleed: 0, // extra CSS px the canvas extends above and below the framed area (framing is unchanged)
+  // Framing: the grid is composed for a `frameHeight` px tall area starting `frameTop` px below the
+  // canvas top, so the canvas can be taller than the screen without changing the look. 0 = whole canvas.
+  frameTop: 0,
+  frameHeight: 0,
   className: "",
 };
 
@@ -74,7 +77,7 @@ uniform vec3  uRight;
 uniform vec3  uUp;
 uniform vec2  uFocus;
 uniform float uShift;
-uniform float uBleed;
+uniform float uFrameBottom;
 
 out vec4 fragColor;
 
@@ -189,7 +192,7 @@ void main() {
     if (sy >= S) break;
     for (int sx = 0; sx < 3; sx++) {
       if (sx >= S) break;
-      vec2 frag = gl_FragCoord.xy - vec2(0.0, uBleed) + (vec2(float(sx), float(sy)) + 0.5) / float(S) - 0.5;
+      vec2 frag = gl_FragCoord.xy - vec2(0.0, uFrameBottom) + (vec2(float(sx), float(sy)) + 0.5) / float(S) - 0.5;
       vec2 uv = (2.0 * frag - uRes) / uRes.y;
       uv.y += uShift;
       vec3 rd = normalize(uFwd * uZoom + uv.x * uRight + uv.y * uUp);
@@ -260,7 +263,7 @@ export function mountGridRise(parent, initialProps = {}) {
       uUp: { value: new Float32Array(3) },
       uFocus: { value: new Float32Array(2) },
       uShift: { value: 0 },
-      uBleed: { value: 0 },
+      uFrameBottom: { value: 0 },
     },
   });
   const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -299,13 +302,21 @@ export function mountGridRise(parent, initialProps = {}) {
   };
   applyProps();
 
-  // uRes is the framed area (canvas minus the bleed above and below), in device pixels.
+  // The framed area in CSS px, clamped to the canvas.
+  const frameRect = (canvasHeight) => {
+    const top = Math.min(Math.max(props.frameTop, 0), canvasHeight - 1);
+    const height = props.frameHeight > 0 ? Math.min(props.frameHeight, canvasHeight - top) : canvasHeight - top;
+    return { top, height };
+  };
+
+  // uRes is the framed area and uFrameBottom its offset from the canvas bottom, in device pixels.
   const resize = () => {
     renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
-    const scale = gl.drawingBufferHeight / Math.max(ctn.offsetHeight, 1);
-    const bleed = Math.min(Math.max(props.bleed, 0), ctn.offsetHeight / 4) * scale;
-    u.uBleed.value = bleed;
-    u.uRes.value.set([gl.drawingBufferWidth, Math.max(1, gl.drawingBufferHeight - 2 * bleed)]);
+    const cssHeight = Math.max(ctn.offsetHeight, 1);
+    const scale = gl.drawingBufferHeight / cssHeight;
+    const f = frameRect(cssHeight);
+    u.uFrameBottom.value = (cssHeight - f.top - f.height) * scale;
+    u.uRes.value.set([gl.drawingBufferWidth, Math.max(1, f.height * scale)]);
     if (raf === 0) renderer.render({ scene: mesh });
   };
 
@@ -318,7 +329,8 @@ export function mountGridRise(parent, initialProps = {}) {
   // Vertical screen shift: a fixed offset, minus a little for every screen the page is scrolled.
   const shiftTarget = () => {
     if (reducedMotion.matches) return props.offsetY;
-    const scrolled = window.scrollY / Math.max(window.innerHeight, 1);
+    // A stable height (not innerHeight, which changes as a phone's toolbars show/hide).
+    const scrolled = window.scrollY / Math.max(props.frameHeight || window.innerHeight, 1);
     return props.offsetY - scrolled * props.scrollParallax;
   };
   let shift = shiftTarget();
@@ -327,9 +339,9 @@ export function mountGridRise(parent, initialProps = {}) {
   const onPointerMove = (e) => {
     if (!props.interactive) return;
     const rect = ctn.getBoundingClientRect();
-    const bleed = Math.min(Math.max(props.bleed, 0), rect.height / 4);
-    const frameTop = rect.top + bleed;
-    const frameHeight = rect.height - 2 * bleed;
+    const f = frameRect(rect.height);
+    const frameTop = rect.top + f.top;
+    const frameHeight = f.height;
     const x = (2 * (e.clientX - rect.left) - rect.width) / frameHeight;
     const y = -(2 * (e.clientY - frameTop) - frameHeight) / frameHeight + shift;
     const { ro, fwd, right, up } = camera;
@@ -417,10 +429,8 @@ export function mountGridRise(parent, initialProps = {}) {
     update(nextProps = {}) {
       Object.assign(props, nextProps);
       if ("className" in nextProps) ctn.className = `grid-rise-container ${props.className}`.trim();
-      if ("dpr" in nextProps) {
-        renderer.dpr = Math.min(props.dpr, window.devicePixelRatio || 1);
-        resize();
-      }
+      if ("dpr" in nextProps) renderer.dpr = Math.min(props.dpr, window.devicePixelRatio || 1);
+      if ("dpr" in nextProps || "frameTop" in nextProps || "frameHeight" in nextProps) resize();
       applyProps();
       if (raf === 0) {
         renderer.render({ scene: mesh });

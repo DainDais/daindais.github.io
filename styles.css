@@ -80,25 +80,45 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Layout ---------- */
 
-/* Animated background (grid-rise.js or faulty-terminal.js). Sized to the tallest the screen
-   gets (--bg-height, set in index.html) so it still reaches the bottom after a phone's address
-   bar slides away, without resizing — and re-rendering — mid-scroll. */
-.site-bg.faulty-terminal-container,
-.site-bg.grid-rise-container {
+/* Animated background (grid-rise.js). Not position: fixed — iOS Safari won't draw fixed
+   elements under its toolbars. Instead a track spans the whole page and the background sticks
+   inside it, reaching --bg-bleed past the screen's top and bottom. --bg-canvas (set in index.html)
+   is fixed, so the canvas never resizes while toolbars hide/show. */
+body { position: relative; }
+
+.site {
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+}
+
+.bg-track {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.bg-track > .site-bg.grid-rise-container {
+  position: sticky;
+  top: calc(-1 * var(--bg-bleed, 0px));
+  width: 100%;
+  height: var(--bg-canvas, calc(100lvh + 2 * var(--bg-bleed, 0px)));
+  margin-top: calc(-1 * var(--bg-bleed, 0px));
+  /* Negative bottom margin: never pushed up near the end of the page (the overflow is clipped). */
+  margin-bottom: calc(-1 * var(--bg-canvas, 100lvh));
+}
+
+/* The alternative FaultyTerminal background (disabled in index.html) stays fixed. */
+.site-bg.faulty-terminal-container {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 0;
   width: 100%;
-  height: 100vh;
-  height: max(100lvh, var(--bg-height, 0px));
+  height: 100lvh;
   pointer-events: none;
-}
-
-/* Grid background bleeds past the screen edges (--bg-bleed, set in index.html). */
-.site-bg.grid-rise-container {
-  top: calc(-1 * var(--bg-bleed, 0px));
-  height: calc(max(100lvh, var(--bg-height, 0px)) + 2 * var(--bg-bleed, 0px));
 }
 
 .page {
