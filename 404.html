@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Page not found — Dais on the Web</title>
+  <meta name="robots" content="noindex" />
+
+  <!-- Project sites live in a folder named exactly like their repo, and that name is
+       case-sensitive. This page is served for any address that doesn't exist on
+       daindais.github.io, so it sends /budgetly-app/ to /Budgetly-App/, etc. -->
+  <script>
+    window.SITES = ["Budgetly-App", "Steganography_Tool", "Peanut-Gallery", "SR"];
+
+    window.correctedPath = function (pathname) {
+      var parts = pathname.replace(/^\/+/, "").split("/");
+      var first = decodeURIComponent(parts[0] || "");
+      if (!first) return null;
+      for (var i = 0; i < window.SITES.length; i++) {
+        var name = window.SITES[i];
+        if (name.toLowerCase() === first.toLowerCase() && name !== first) {
+          parts[0] = name;
+          return "/" + parts.join("/");
+        }
+      }
+      return null;
+    };
+
+    (function () {
+      var fixed = window.correctedPath(location.pathname);
+      if (fixed) location.replace(fixed + location.search + location.hash);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .notfound {
+      max-width: 472px;
+      margin: 0 auto;
+      padding: 18vh 20px 40px;
+      text-align: center;
+    }
+    .notfound h1 { margin: 0 0 10px; font-size: 1.6rem; }
+    .notfound p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+    .notfound .code { color: var(--chip-text); font-size: 3rem; margin-bottom: 8px; }
+    .notfound ul { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .notfound a.card { display: block; padding: 14px 16px; }
+    .notfound a.card:hover { background: var(--glass-hover); }
+    .notfound .hint-note { margin-top: 18px; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <main class="notfound">
+    <div class="code">404</div>
+    <h1>Page not found</h1>
+    <p>That address doesn't exist. Addresses here are case-sensitive, so <code>/Budgetly-App/</code> works but <code>/budgetly-app/</code> doesn't.</p>
+
+    <ul>
+      <li><a class="card" href="/">Dais on the Web — contact, resume &amp; CV</a></li>
+      <li><a class="card" href="/Budgetly-App/">Budgetly — budgeting assistant</a></li>
+      <li><a class="card" href="/Steganography_Tool/">SteganOS — steganography toolkit</a></li>
+    </ul>
+
+    <p class="hint-note">github.com/daindais</p>
+  </main>
+</body>
+</html>
