@@ -152,10 +152,87 @@
         </li>
 
         <li class="line-sidebar__item">
-          <button class="line-sidebar__row" type="button" id="section-documents" aria-expanded="false" aria-controls="panel-documents">
+          <button class="line-sidebar__row" type="button" id="section-projects" aria-expanded="false" aria-controls="panel-projects">
             <span class="line-sidebar__marker" aria-hidden="true"></span>
             <span class="line-sidebar__label">
               <span class="line-sidebar__index">03</span>
+              <span class="line-sidebar__text">Projects</span>
+            </span>
+          </button>
+          <div class="line-sidebar__panel" id="panel-projects" role="region" aria-labelledby="section-projects">
+            <div class="line-sidebar__panel-inner">
+              <section class="projects" aria-label="Projects">
+              <article class="card project" data-tilt data-tilt-scale="1.02">
+                <div class="project-media">
+                  <video class="project-video" src="assets/projects/steganos.mp4" poster="assets/projects/steganos.jpg"
+                         muted loop playsinline preload="none" disablepictureinpicture
+                         aria-label="SteganOS preview clip"></video>
+                </div>
+                <div class="project-body">
+                  <h3 class="project-title">SteganOS</h3>
+                  <p class="project-blurb">A browser tool that hides AES-256-GCM encrypted messages inside PNG images and in plain text using invisible characters — then detects the same tricks with chi-square and sample-pair analysis. Built in TypeScript with 38 tests gating every deploy.</p>
+                  <div class="project-links">
+                <a class="project-link" href="https://daindais.github.io/Steganography_Tool/" target="_blank" rel="noopener">Live demo</a>
+                <a class="project-link" href="https://github.com/DainDais/Steganography_Tool" target="_blank" rel="noopener">Code</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card project" data-tilt data-tilt-scale="1.02">
+                <div class="project-media">
+                  <video class="project-video" src="assets/projects/budgetly.mp4" poster="assets/projects/budgetly.jpg"
+                         muted loop playsinline preload="none" disablepictureinpicture
+                         aria-label="Budgetly preview clip"></video>
+                </div>
+                <div class="project-body">
+                  <h3 class="project-title">Budgetly</h3>
+                  <p class="project-blurb">2nd place in the FMA x EMB FinTech Case Competition. An AI budgeting assistant for college students that tracks spending, breaks it down by category, and pushes back on impulse buys before they add up.</p>
+                  <div class="project-links">
+                <a class="project-link" href="https://daindais.github.io/Budgetly-App/" target="_blank" rel="noopener">Live demo</a>
+                <a class="project-link" href="https://github.com/DainDais/Budgetly-App" target="_blank" rel="noopener">Code</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card project" data-tilt data-tilt-scale="1.02">
+                <div class="project-media">
+                  <video class="project-video" src="assets/projects/platformer.mp4" poster="assets/projects/platformer.jpg"
+                         muted loop playsinline preload="none" disablepictureinpicture
+                         aria-label="2D Platformer Prototype preview clip"></video>
+                </div>
+                <div class="project-body">
+                  <h3 class="project-title">2D Platformer Prototype</h3>
+                  <p class="project-blurb">A GameMaker Studio 2 action platformer: roughly 7,100 lines across 18 gameplay systems with a custom shader. Attacks are defined as data instead of new code paths, and collision is split from animation so art can change without breaking hitboxes.</p>
+                  <div class="project-links">
+                <a class="project-link" href="https://github.com/DainDais/SR" target="_blank" rel="noopener">Code</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card project" data-tilt data-tilt-scale="1.02">
+                <div class="project-media">
+                  <video class="project-video" src="assets/projects/dungeon.mp4" poster="assets/projects/dungeon.jpg"
+                         muted loop playsinline preload="none" disablepictureinpicture
+                         aria-label="3D Dungeon Crawler Prototype preview clip"></video>
+                </div>
+                <div class="project-body">
+                  <h3 class="project-title">3D Dungeon Crawler Prototype</h3>
+                  <p class="project-blurb">An early first-person dungeon crawler — stepping down dark corridors while I worked out 3D movement, lighting, and how to lay out rooms that still read clearly in near darkness.</p>
+                  <div class="project-links">
+                <a class="project-link" href="https://github.com/DainDais/DungeonCrawler" target="_blank" rel="noopener">Code</a>
+                  </div>
+                </div>
+              </article>
+              </section>
+            </div>
+          </div>
+        </li>
+
+        <li class="line-sidebar__item">
+          <button class="line-sidebar__row" type="button" id="section-documents" aria-expanded="false" aria-controls="panel-documents">
+            <span class="line-sidebar__marker" aria-hidden="true"></span>
+            <span class="line-sidebar__label">
+              <span class="line-sidebar__index">04</span>
               <span class="line-sidebar__text">Documents</span>
             </span>
           </button>
@@ -262,6 +339,29 @@
       defaultActive: null, // all sections start collapsed
       revealOnOpen: true,  // scroll to show the bottom of a section when it opens (only if it's cut off)
     });
+  </script>
+
+  <!-- Project preview clips: load and play only while visible (and not for reduced motion) -->
+  <script>
+    (function () {
+      var videos = document.querySelectorAll(".project-video");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        videos.forEach(function (v) { v.removeAttribute("loop"); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var v = entry.target;
+          if (entry.isIntersecting) {
+            if (v.preload !== "auto") v.preload = "auto";
+            v.play().catch(function () {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.2 });
+      videos.forEach(function (v) { io.observe(v); });
+    })();
   </script>
 
   <!-- Startup hints: "Grab me" beside the badge, "Click to expand" above the menu (see hints.js) -->

@@ -389,6 +389,72 @@ body { position: relative; }
 .link:hover .arrow,
 .doc:hover .arrow { transform: translateX(3px); }
 
+/* ---------- Projects ---------- */
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project {
+  overflow: hidden;
+  transition: background 0.15s;
+}
+
+.project:hover { background: var(--glass-hover); }
+
+.project-media {
+  background: #05070a;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #05070a;
+}
+
+.project-body { padding: 14px 16px 16px; }
+
+.project-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: inherit;
+}
+
+.project-blurb {
+  color: var(--muted);
+  font-family: var(--font-grotesk);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.project-link {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--chip-text);
+  font-size: 0.78rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.project-link:hover {
+  background: var(--card-hover);
+  color: var(--text);
+}
+
 /* ---------- Documents ---------- */
 
 .docs {
