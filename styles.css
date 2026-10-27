@@ -389,6 +389,37 @@ body { position: relative; }
 .link:hover .arrow,
 .doc:hover .arrow { transform: translateX(3px); }
 
+/* ---------- Nested menu (projects inside the Projects section) ---------- */
+
+.sections--nested {
+  --nest-indent: 86px; /* pushes child rows right of the parent label */
+  padding-left: var(--nest-indent);
+}
+
+/* Cards keep the full panel width: undo the indent (and the marker gutter) for panels. */
+.sections--nested .line-sidebar__panel {
+  margin-left: calc(-1 * var(--nest-indent));
+  width: calc(100% + var(--nest-indent));
+}
+
+.sections--nested .line-sidebar__list { padding: 2px 0 0; }
+
+.sections--nested .line-sidebar__panel-inner { padding-top: 0; }
+
+.sections--nested .line-sidebar__item.is-open > .line-sidebar__panel > .line-sidebar__panel-inner {
+  padding-top: 10px;
+}
+
+/* The widened hit area of the parent rows would otherwise sit over these rows. */
+.sections--nested .line-sidebar__row::before { inset: -4px -12px; }
+
+.row-note { color: #dde4ee; }
+
+/* Stronger shadow: these sit over the brightest tiles of the background. */
+.sections--nested .line-sidebar__label {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 14px rgba(0, 0, 0, 0.9);
+}
+
 /* ---------- Projects ---------- */
 
 .projects {

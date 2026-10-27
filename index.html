@@ -161,69 +161,120 @@
           </button>
           <div class="line-sidebar__panel" id="panel-projects" role="region" aria-labelledby="section-projects">
             <div class="line-sidebar__panel-inner">
-              <section class="projects" aria-label="Projects">
-              <article class="card project" data-tilt data-tilt-scale="1.02">
-                <div class="project-media">
-                  <video class="project-video" src="assets/projects/steganos.mp4" poster="assets/projects/steganos.jpg"
-                         muted loop playsinline preload="none" disablepictureinpicture
-                         aria-label="SteganOS preview clip"></video>
-                </div>
-                <div class="project-body">
-                  <h3 class="project-title">SteganOS</h3>
-                  <p class="project-blurb">A browser tool that hides AES-256-GCM encrypted messages inside PNG images and in plain text using invisible characters — then detects the same tricks with chi-square and sample-pair analysis. Built in TypeScript with 38 tests gating every deploy.</p>
-                  <div class="project-links">
-                <a class="project-link" href="https://daindais.github.io/Steganography_Tool/" target="_blank" rel="noopener">Live demo</a>
-                <a class="project-link" href="https://github.com/DainDais/Steganography_Tool" target="_blank" rel="noopener">Code</a>
-                  </div>
-                </div>
-              </article>
+              <!-- Each project is its own collapsible child of the Projects section -->
+              <div class="sections sections--nested" id="project-list" aria-label="Projects">
+                <ul class="line-sidebar__list">
+                  <li class="line-sidebar__item">
+                    <button class="line-sidebar__row" type="button" id="project-steganos" aria-expanded="false" aria-controls="panel-project-steganos">
+                      <span class="line-sidebar__marker" aria-hidden="true"></span>
+                      <span class="line-sidebar__label">
+                        <span class="line-sidebar__text">SteganOS<span class="row-note"> - A Steganography tool</span></span>
+                      </span>
+                    </button>
+                    <div class="line-sidebar__panel" id="panel-project-steganos" role="region" aria-labelledby="project-steganos">
+                      <div class="line-sidebar__panel-inner">
+                      <article class="card project" data-tilt data-tilt-scale="1.02">
+                                      <div class="project-media">
+                                        <video class="project-video" src="assets/projects/steganos.mp4" poster="assets/projects/steganos.jpg"
+                                               muted loop playsinline preload="none" disablepictureinpicture
+                                               aria-label="SteganOS preview clip"></video>
+                                      </div>
+                                      <div class="project-body">
+                                        <h3 class="project-title">SteganOS</h3>
+                                        <p class="project-blurb">A browser tool that hides AES-256-GCM encrypted messages inside PNG images and in plain text using invisible characters — then detects the same tricks with chi-square and sample-pair analysis. Built in TypeScript with 38 tests gating every deploy.</p>
+                                        <div class="project-links">
+                                      <a class="project-link" href="https://daindais.github.io/Steganography_Tool/" target="_blank" rel="noopener">Live demo</a>
+                                      <a class="project-link" href="https://github.com/DainDais/Steganography_Tool" target="_blank" rel="noopener">Code</a>
+                                        </div>
+                                      </div>
+                                    </article>
+                      </div>
+                    </div>
+                  </li>
 
-              <article class="card project" data-tilt data-tilt-scale="1.02">
-                <div class="project-media">
-                  <video class="project-video" src="assets/projects/budgetly.mp4" poster="assets/projects/budgetly.jpg"
-                         muted loop playsinline preload="none" disablepictureinpicture
-                         aria-label="Budgetly preview clip"></video>
-                </div>
-                <div class="project-body">
-                  <h3 class="project-title">Budgetly</h3>
-                  <p class="project-blurb">2nd place in the FMA x EMB FinTech Case Competition. An AI budgeting assistant for college students that tracks spending, breaks it down by category, and pushes back on impulse buys before they add up.</p>
-                  <div class="project-links">
-                <a class="project-link" href="https://daindais.github.io/Budgetly-App/" target="_blank" rel="noopener">Live demo</a>
-                <a class="project-link" href="https://github.com/DainDais/Budgetly-App" target="_blank" rel="noopener">Code</a>
-                  </div>
-                </div>
-              </article>
+                  <li class="line-sidebar__item">
+                    <button class="line-sidebar__row" type="button" id="project-budgetly" aria-expanded="false" aria-controls="panel-project-budgetly">
+                      <span class="line-sidebar__marker" aria-hidden="true"></span>
+                      <span class="line-sidebar__label">
+                        <span class="line-sidebar__text">Budgetly<span class="row-note"> - AI Budgeting tool for Young Adults</span></span>
+                      </span>
+                    </button>
+                    <div class="line-sidebar__panel" id="panel-project-budgetly" role="region" aria-labelledby="project-budgetly">
+                      <div class="line-sidebar__panel-inner">
+                      <article class="card project" data-tilt data-tilt-scale="1.02">
+                                      <div class="project-media">
+                                        <video class="project-video" src="assets/projects/budgetly.mp4" poster="assets/projects/budgetly.jpg"
+                                               muted loop playsinline preload="none" disablepictureinpicture
+                                               aria-label="Budgetly preview clip"></video>
+                                      </div>
+                                      <div class="project-body">
+                                        <h3 class="project-title">Budgetly</h3>
+                                        <p class="project-blurb">2nd place in the FMA x EMB FinTech Case Competition. An AI budgeting assistant for college students that tracks spending, breaks it down by category, and pushes back on impulse buys before they add up.</p>
+                                        <div class="project-links">
+                                      <a class="project-link" href="https://daindais.github.io/Budgetly-App/" target="_blank" rel="noopener">Live demo</a>
+                                      <a class="project-link" href="https://github.com/DainDais/Budgetly-App" target="_blank" rel="noopener">Code</a>
+                                        </div>
+                                      </div>
+                                    </article>
+                      </div>
+                    </div>
+                  </li>
 
-              <article class="card project" data-tilt data-tilt-scale="1.02">
-                <div class="project-media">
-                  <video class="project-video" src="assets/projects/platformer.mp4" poster="assets/projects/platformer.jpg"
-                         muted loop playsinline preload="none" disablepictureinpicture
-                         aria-label="2D Platformer Prototype preview clip"></video>
-                </div>
-                <div class="project-body">
-                  <h3 class="project-title">2D Platformer Prototype</h3>
-                  <p class="project-blurb">A GameMaker Studio 2 action platformer: roughly 7,100 lines across 18 gameplay systems with a custom shader. Attacks are defined as data instead of new code paths, and collision is split from animation so art can change without breaking hitboxes.</p>
-                  <div class="project-links">
-                <a class="project-link" href="https://github.com/DainDais/SR" target="_blank" rel="noopener">Code</a>
-                  </div>
-                </div>
-              </article>
+                  <li class="line-sidebar__item">
+                    <button class="line-sidebar__row" type="button" id="project-platformer" aria-expanded="false" aria-controls="panel-project-platformer">
+                      <span class="line-sidebar__marker" aria-hidden="true"></span>
+                      <span class="line-sidebar__label">
+                        <span class="line-sidebar__text">2D Platformer Prototype</span>
+                      </span>
+                    </button>
+                    <div class="line-sidebar__panel" id="panel-project-platformer" role="region" aria-labelledby="project-platformer">
+                      <div class="line-sidebar__panel-inner">
+                      <article class="card project" data-tilt data-tilt-scale="1.02">
+                                      <div class="project-media">
+                                        <video class="project-video" src="assets/projects/platformer.mp4" poster="assets/projects/platformer.jpg"
+                                               muted loop playsinline preload="none" disablepictureinpicture
+                                               aria-label="2D Platformer Prototype preview clip"></video>
+                                      </div>
+                                      <div class="project-body">
+                                        <h3 class="project-title">2D Platformer Prototype</h3>
+                                        <p class="project-blurb">A GameMaker Studio 2 action platformer: roughly 7,100 lines across 18 gameplay systems with a custom shader. Attacks are defined as data instead of new code paths, and collision is split from animation so art can change without breaking hitboxes.</p>
+                                        <div class="project-links">
+                                      <a class="project-link" href="https://github.com/DainDais/SR" target="_blank" rel="noopener">Code</a>
+                                        </div>
+                                      </div>
+                                    </article>
+                      </div>
+                    </div>
+                  </li>
 
-              <article class="card project" data-tilt data-tilt-scale="1.02">
-                <div class="project-media">
-                  <video class="project-video" src="assets/projects/dungeon.mp4" poster="assets/projects/dungeon.jpg"
-                         muted loop playsinline preload="none" disablepictureinpicture
-                         aria-label="3D Dungeon Crawler Prototype preview clip"></video>
-                </div>
-                <div class="project-body">
-                  <h3 class="project-title">3D Dungeon Crawler Prototype</h3>
-                  <p class="project-blurb">An early first-person dungeon crawler — stepping down dark corridors while I worked out 3D movement, lighting, and how to lay out rooms that still read clearly in near darkness.</p>
-                  <div class="project-links">
-                <a class="project-link" href="https://github.com/DainDais/DungeonCrawler" target="_blank" rel="noopener">Code</a>
-                  </div>
-                </div>
-              </article>
-              </section>
+                  <li class="line-sidebar__item">
+                    <button class="line-sidebar__row" type="button" id="project-dungeon" aria-expanded="false" aria-controls="panel-project-dungeon">
+                      <span class="line-sidebar__marker" aria-hidden="true"></span>
+                      <span class="line-sidebar__label">
+                        <span class="line-sidebar__text">3D Dungeon Crawler Prototype</span>
+                      </span>
+                    </button>
+                    <div class="line-sidebar__panel" id="panel-project-dungeon" role="region" aria-labelledby="project-dungeon">
+                      <div class="line-sidebar__panel-inner">
+                      <article class="card project" data-tilt data-tilt-scale="1.02">
+                                      <div class="project-media">
+                                        <video class="project-video" src="assets/projects/dungeon.mp4" poster="assets/projects/dungeon.jpg"
+                                               muted loop playsinline preload="none" disablepictureinpicture
+                                               aria-label="3D Dungeon Crawler Prototype preview clip"></video>
+                                      </div>
+                                      <div class="project-body">
+                                        <h3 class="project-title">3D Dungeon Crawler Prototype</h3>
+                                        <p class="project-blurb">An early first-person dungeon crawler — stepping down dark corridors while I worked out 3D movement, lighting, and how to lay out rooms that still read clearly in near darkness.</p>
+                                        <div class="project-links">
+                                      <a class="project-link" href="https://github.com/DainDais/DungeonCrawler" target="_blank" rel="noopener">Code</a>
+                                        </div>
+                                      </div>
+                                    </article>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </li>
@@ -338,6 +389,27 @@
       smoothing: 100,
       defaultActive: null, // all sections start collapsed
       revealOnOpen: true,  // scroll to show the bottom of a section when it opens (only if it's cut off)
+    });
+
+    // Projects: each entry collapses on its own, indented under the Projects section.
+    initLineSidebar(document.getElementById("project-list"), {
+      accentColor: "#ffffff",
+      textColor: "#f6f8fb",
+      markerColor: "#cfd6e0",
+      showIndex: false,
+      showMarker: true,
+      proximityRadius: 80,
+      maxShift: 16,
+      falloff: "smooth",
+      markerLength: 26,
+      markerGap: 0,
+      tickScale: 0.5,
+      scaleTick: true,
+      itemGap: 14,
+      fontSize: 0.85,
+      smoothing: 100,
+      defaultActive: null,
+      revealOnOpen: true,
     });
   </script>
 
